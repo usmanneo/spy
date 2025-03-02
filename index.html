@@ -21,14 +21,14 @@
 
   <script>
     var firebaseConfig = {
-      apiKey: "AIzaSyCbCGpILXPKkrQ1LWBmltq86JwiMxJqaFI",
-  authDomain: "h4k3rspy-c4ab0.firebaseapp.com",
-  databaseURL: "https://h4k3rspy-c4ab0-default-rtdb.firebaseio.com",
-  projectId: "h4k3rspy-c4ab0",
-  storageBucket: "h4k3rspy-c4ab0.firebasestorage.app",
-  messagingSenderId: "833031176871",
-  appId: "1:833031176871:web:11822e9543619f631f9182",
-  measurementId: "G-KBEB9RBK56"
+      apiKey: "YOUR_API_KEY", // Apna Firebase API key yahan daal do
+      authDomain: "h4k3rspy-c4ab0.firebaseapp.com",
+      databaseURL: "https://h4k3rspy-c4ab0-default-rtdb.firebaseio.com",
+      projectId: "h4k3rspy-c4ab0",
+      storageBucket: "h4k3rspy-c4ab0.firebasestorage.app",
+      messagingSenderId: "833031176871",
+      appId: "1:833031176871:web:11822e9543619f631f9182",
+      measurementId: "G-KBEB9RBK56"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -51,7 +51,7 @@
       statusDiv.textContent = "Stream received! Click Play to start.";
       remoteVideo.srcObject = event.streams[0];
 
-      // User interaction ke liye play button
+      // Play button ke saath user interaction
       playButton.style.display = "block";
       playButton.onclick = function() {
         remoteVideo.play().then(() => {
@@ -61,16 +61,17 @@
         }).catch(e => console.error("Video play failed:", e));
       };
 
-      // Mute/unmute events ke liye debug
+      // Mute/unmute events handle karo
       event.track.onunmute = () => {
         console.log("Track unmuted, video should play now");
-        // Agar user ne pehle click kiya ho to auto play karo
+        statusDiv.textContent = "Video available! Playing...";
         if (playButton.style.display === "none") {
           remoteVideo.play().catch(e => console.error("Auto play failed after unmute:", e));
         }
       };
       event.track.onmute = () => {
         console.log("Track muted, video may be black");
+        statusDiv.textContent = "Video paused (screen off on device)";
       };
 
       remoteVideo.onloadedmetadata = () => {
